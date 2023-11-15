@@ -1,17 +1,13 @@
-import styled from "styled-components"
+import { colors } from "./ui-components/colors";
 
 type CircleProps = {
     preview?: boolean;
 }
 
-const CircleSvg = styled.svg<CircleProps>`
-    fill: ${({preview}) => preview ? 'grey': '#fd7e14'};
-
-`
-
 export function Circle({ preview }: CircleProps) {
+	const fill = preview ? 'lightGrey' : colors.orange;
     return (
-        <CircleSvg preview={!!preview}
+        <svg fill={fill}
             width={64}
             height={64}
             version="1.1" 
@@ -52,6 +48,6 @@ export function Circle({ preview }: CircleProps) {
                     </g>
                 </g>
             </g>
-        </CircleSvg>
+        </svg>
     )
 }
