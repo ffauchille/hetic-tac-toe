@@ -71,17 +71,20 @@ function ShareGameLinkPage({
   link,
   children,
 }: React.PropsWithChildren<{ link: string }>) {
-  const poller = useGameStatusPolling();
+  const startPolling = useGameStatusPolling();
   const {
     state: { game_state },
   } = useGameContext();
+  const pollerRef = React.useRef<number>();
   React.useEffect(() => {
     if (game_state?.player_joined) {
-      if (poller.current) {
-        clearInterval(poller.current);
+      if (pollerRef.current) {
+        clearInterval(pollerRef.current);
       }
+    } else if (!pollerRef.current){
+        pollerRef.current = startPolling();
     }
-  }, [game_state, poller]);
+  }, [game_state, pollerRef]);
 
   return game_state?.player_joined ? (
     children

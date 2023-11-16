@@ -10,4 +10,4 @@ export const Page = styled.div`
   background-color: ${colors.darkGrey};
   color: white;
   align-items: center;
-`
+`;

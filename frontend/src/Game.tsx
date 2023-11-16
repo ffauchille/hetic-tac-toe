@@ -104,16 +104,24 @@ function Game() {
   ) {
     return <>No board found ...</>;
   }
-  useGameStatusPolling();
-
+  const startPolling = useGameStatusPolling();
+  const pollerRef = React.useRef<number>();
+  const winner = game_state.result;
   const board = game_state.board;
   const currentPlayer = game_state.player_active;
   const ownerPlayer = game_state.player_owner;
   const joinerPlayer = game_state.player_joined;
+  React.useEffect(() => {
+    if (!pollerRef.current) {
+      pollerRef.current = startPolling();
+    }
+    if (winner !== null) {
+      pollerRef.current && clearInterval(pollerRef.current);
+    }
+  }, [winner]);
 
   const [currentCellHovered, setCurrentCellHovered] =
     React.useState<null | TicTacToeCell>();
-  const winner = game_state.result;
 
   const PlayerColor =
     currentPlayer.player_type === "O" ? OrangeText : GreenText;

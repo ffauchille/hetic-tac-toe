@@ -9,19 +9,19 @@ const bounce = keyframes`
   97% { transform:translateY(0%); }
   99% { transform:translateY(-3%); }
   100% { transform:translateY(0); }
-`
+`;
 
 const TextSvg = styled.svg`
-    flex-grow: 1;
-    width: 100%;
-    height: 0px;    
-    font-size: x-large;
-    text {
-        animation: ${bounce} 8s linear infinite;
-        stroke-width: 1;
-        stroke: ${colors.green};
-        fill: ${colors.darkGrey};
-    }
+  flex-grow: 1;
+  width: 100%;
+  height: 0px;
+  font-size: x-large;
+  text {
+    animation: ${bounce} 8s linear infinite;
+    stroke-width: 1;
+    stroke: ${colors.green};
+    fill: ${colors.darkGrey};
+  }
 `;
 
 export function GameTitle({ text }: { text: string }) {
