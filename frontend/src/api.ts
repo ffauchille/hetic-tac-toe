@@ -1,4 +1,3 @@
-import { API_URL } from "./constants";
 import {
   GameEngineResponse,
   GameErrorResponse,
@@ -43,10 +42,21 @@ function raiseError(response: any): never {
   throw new Error("unhandled error from api");
 }
 
+async function getEnvConfig() {
+  const response = await fetch("/env-config.json");
+  return await response.json();
+}
+
+async function getApiUrl() {
+  const {apiDomain} = await getEnvConfig();
+  return `${window.location.protocol}//${apiDomain}`;
+}
+
 export async function joinGame(
   gameId: string,
   player: Player
 ): Promise<GameEngineResponse> {
+  const API_URL = await getApiUrl();
   const response = await post(`${API_URL}/v1/game/join`, {
     game_id: gameId,
     player_joined: player,
@@ -58,6 +68,7 @@ export async function joinGame(
 export async function getGameStatus(
   game_id: string
 ): Promise<GameEngineResponse> {
+  const API_URL = await getApiUrl();
   const response = await post(`${API_URL}/v1/game/status`, { game_id });
   if (responseIsSuccessfull(response)) {
     return response;
@@ -68,6 +79,7 @@ export async function startGame(
   player_owner: Player,
   title: string
 ): Promise<GameEngineResponse> {
+  const API_URL = await getApiUrl();
   const response = await post(`${API_URL}/v1/game/start`, {
     player_owner,
     title,
@@ -83,6 +95,7 @@ export async function savePlayerMove(
   cell: TicTacToeCell,
   currentPlayer: Player
 ): Promise<GameEngineResponse> {
+  const API_URL = await getApiUrl();
   const response = await post(`${API_URL}/v1/game/move`, {
     cell,
     game_id,
