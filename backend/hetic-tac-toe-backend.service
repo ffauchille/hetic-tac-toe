@@ -1,0 +1,26 @@
+[Unit]
+Description=Hetic tac toe web service
+After=network.target
+
+[Service]
+Type=simple
+User=ubuntu
+DynamicUser=true
+
+WorkingDirectory=/home/ubuntu/backend
+PrivateTmp=true
+
+ExecStart=/home/ubuntu/hetic-tac-toe-venv/bin/uvicorn \
+        --proxy-headers \
+        --forwarded-allow-ips='*' \
+        --workers=1 \
+        --port=8000 \
+        --no-access-log \
+        main:app
+
+ExecReload=/bin/kill -HUP ${MAINPID}
+RestartSec=2
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
